@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>祈祷世界和平 -八（2）班学生制作</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0121212 0%, #02b2b29 30%, #04a372f 100%);
+            color: #d1cdc7;
+            min-height: 100vh;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        #backgroundVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            opacity: 0.3;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 36, 97, 0.7);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #4a90e2, #5cb85c, #f0ad4e);
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 3.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            color: #e8f4fc;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .peace-symbol {
+            font-size: 4rem;
+            color: #f0ad4e;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .dove-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .dove {
+            position: absolute;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            animation: fly linear infinite;
+        }
+        
+        @keyframes fly {
+            0% { 
+                transform: translateX(-100px) translateY(var(--y)) rotate(0deg); 
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateX(calc(100vw + 100px)) translateY(var(--y)) rotate(10deg); 
+                opacity: 0;
+            }
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(232, 244, 252, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h2 i {
+            color: #4a90e2;
+        }
+        
+        .prayer-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #e8f4fc;
+            text-align: justify;
+        }
+        
+        .prayer-text p {
+            margin-bottom: 15px;
+        }
+        
+        .peace-timeline {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .peace-timeline li {
+            padding: 15px 0 15px 30px;
+            border-left: 3px solid #4a90e2;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .peace-timeline li::before {
+            content: "✓";
+            position: absolute;
+            left: -10px;
+            top: 15px;
+            background-color: #4a90e2;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-desc {
+            color: #c0d4e6;
+            font-size: 0.95rem;
+        }
+        
+        .media-section {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .media-section h2 {
+            color: #fff;
+            margin-bottom: 25px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .media-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .media-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .media-title {
+            font-size: 1.2rem;
+            color: #f0ad4e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .media-player {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .media-control-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .video-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #peaceVideo {
+            width: 100%;
+            display: block;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 1.2rem;
+        }
+        
+        .action-section {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .action-title {
+            color: #fff;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .peace-counter {
+            font-size: 4rem;
+            color: #f0ad4e;
+            font-weight: 700;
+            margin: 20px 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #4a90e2, #5cb85c);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(248, 249, 250, 0.2);
+            color: #f5f5f5;
+            border: 2px solid rgba(233, 236, 239, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(233, 236, 239, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .btn-media {
+            background: linear-gradient(to right, #f0ad4e, #ec971f);
+            color: white;
+        }
+        
+        .btn-media:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(240, 173, 78, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #c0d4e6;
+            font-size: 0.95rem;
+            border-top: 1px solid rgba(234, 234, 234, 0.2);
+            margin-top: 20px;
+        }
+        
+        .heart {
+            color: #e74c3c;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            5% { transform: scale(1.1); }
+            10% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+        }
+        
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+        
+        .lang-btn {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(221, 221, 221, 0.3);
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+        }
+        
+        .lang-btn:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        
+        .media-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .play-btn {
+            background-color: #5cb85c;
+            color: white;
+        }
+        
+        .pause-btn {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        
+        .stop-btn {
+            background-color: #d9534f;
+            color: white;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .volume-slider {
+            width: 100px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .peace-counter {
+                font-size: 3rem;
+            }
+            
+            .btn {
+                min-width: 160px;
+                padding: 12px 25px;
+            }
+            
+            .media-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .media-card {
+                width: 100%;
+            }
+            
+            .video-container {
+                width: 100%;
+            }
+            
+            .language-selector {
+                position: static;
+                text-align: right;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video id="backgroundVideo" autoplay muted loop playsinline>
+            <source src="456.mp4" type="video/mp4">
+            您的浏览器不支持视频标签。
+        </video>
+    </div>
+    
+    <div class="overlay"></div>
+    
+    <div class="language-selector">
+        <button class="lang-btn" id="langToggle">English</button>
+    </div>
+    
+    <div class="dove-container" id="doveContainer"></div>
+    
+    <div class="container">
+        <header>
+            <h1>祈祷世界和平-八(2)班学生制作</h1>
+            <div class="subtitle">愿和平之光照亮世界的每一个角落</div>
+            <div class="peace-symbol">☮</div>
+            <p>我们共同祈愿，战争与冲突不再，和谐与理解永存</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <h2><i class="fas fa-pray"></i> 和平祈愿文</h2>
+                <div class="prayer-text">
+                    <p>在这纷繁复杂的世界中，我们怀着虔诚的心，祈祷和平降临大地。愿国家之间放下争端，民族之间消除隔阂，文化之间相互尊重。</p>
+                    <p>愿孩子们在安宁中成长，不再有恐惧与流离；愿人们在和谐中共处，共享地球的丰饶与美丽。让我们以宽容替代仇恨，以对话替代对抗，以合作替代冲突。</p>
+                    <p>和平不仅是战争的缺席，更是正义、发展和尊重的体现。愿我们共同努力，建设一个没有暴力、没有贫困、没有歧视的世界。</p>
+                    <p>从今天起，让我们每个人都成为和平的使者，用善良的言行传播和平的种子，用理解与关爱浇灌和谐之花。</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2><i class="fas fa-handshake"></i> 和平之路</h2>
+                <ul class="peace-timeline">
+                    <li>
+                        <div class="timeline-title">相互尊重</div>
+                        <div class="timeline-desc">尊重不同国家、民族、文化和宗教信仰的差异，理解并接纳多样性。</div>
+                    </li>
+                    <li>
+                        <div class="timeline-title">平等对话</div>
+                        <div class="timeline-desc">通过和平对话解决分歧，避免武力冲突，寻求共赢的解决方案。</div>
+                    </li>
+                    <li>
+                        <div class="timeline-title">合作发展</div>
+                        <div class="timeline-desc">在全球性问题如气候变化、贫困、疾病等方面加强国际合作。</div>
+                    </li>
+                    <li>
+                        <div class="timeline-title">教育普及</div>
+                        <div class="timeline-desc">通过教育培养和平理念，让下一代学会用非暴力方式解决冲突。</div>
+                    </li>
+                    <li>
+                        <div class="timeline-title">人道关怀</div>
+                        <div class="timeline-desc">关注战争与灾难中的受难者，提供人道主义援助，减轻人类苦难。</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="media-section">
+            <h2><i class="fas fa-music"></i> 和平之音与影像</h2>
+            
+            <div class="media-controls">
+                <div class="media-card">
+                    <div class="media-title">
+                        <i class="fas fa-volume-up"></i> 背景音乐
+                    </div>
+                    <audio id="backgroundMusic" loop>
+                        <source src="123.mp3" type="audio/mp3">
+                        您的浏览器不支持音频元素。
+                    </audio>
+                    
+                    <div class="media-control-buttons">
+                        <button class="media-btn play-btn" id="playMusicBtn">
+                            <i class="fas fa-play"></i> 播放音乐
+                        </button>
+                        <button class="media-btn pause-btn" id="pauseMusicBtn">
+                            <i class="fas fa-pause"></i> 暂停音乐
+                        </button>
+                        <button class="media-btn stop-btn" id="stopMusicBtn">
+                            <i class="fas fa-stop"></i> 停止音乐
+                        </button>
+                    </div>
+                    
+                    <div class="volume-control">
+                        <i class="fas fa-volume-down"></i>
+                        <input type="range" id="musicVolume" class="volume-slider" min="0" max="1" step="0.1" value="0.5">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: #c0d4e6;">
+                        当前播放: "kamin" - 舒缓的钢琴曲
+                    </div>
+                </div>
+                
+                <div class="media-card">
+                    <div class="media-title">
+                        <i class="fas fa-video"></i> 背景视频控制
+                    </div>
+                    
+                    <div class="media-control-buttons">
+                        <button class="media-btn play-btn" id="playVideoBtn">
+                            <i class="fas fa-play"></i> 播放视频
+                        </button>
+                        <button class="media-btn pause-btn" id="pauseVideoBtn">
+                            <i class="fas fa-pause"></i> 暂停视频
+                        </button>
+                        <button class="media-btn stop-btn" id="muteVideoBtn">
+                            <i class="fas fa-volume-mute"></i> 静音/取消
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 15px; font-size: 0.9rem; color: #c0d4e6;">
+                        背景视频: 战争
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <i class="fas fa-play-circle" style="font-size: 3rem; margin-right: 10px;"></i>
+                    点击下方按钮播放和平视频
+                </div>
+                <video id="peaceVideo" controls style="display: none;">
+                    <source src="456.mp4" type="video/mp4">
+                    您的浏览器不支持视频标签。
+                </video>
+                
+                <div style="text-align: center; padding: 15px; background-color: rgba(0,0,0,0.5);">
+                    <button class="btn btn-media" id="playPeaceVideoBtn">
+                        <i class="fas fa-play"></i> 播放和平视频
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-section">
+            <h2 class="action-title">加入和平祈愿</h2>
+            <p>您的每一次祈愿，都是和平力量的一次增强</p>
+            <div class="peace-counter" id="peaceCounter">185,429</div>
+            <p>人已参与祈愿</p>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="prayBtn">
+                    <i class="fas fa-dove"></i> 我也要祈愿
+                </button>
+                <button class="btn btn-secondary" id="shareBtn">
+                    <i class="fas fa-share-alt"></i> 分享和平
+                </button>
+                <button class="btn btn-secondary" id="learnBtn">
+                    <i class="fas fa-book"></i> 了解和平组织
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>愿和平之光永驻人间，愿世界充满爱与理解</p>
+            <p>让我们携手努力，为子孙后代创造一个更美好的世界 <span class="heart">❤</span></p>
+            <p style="margin-top: 20px; font-size: 0.85rem;">© 2026 世界和平倡议 | 本页面仅为和平祈愿展示</p>
+        </footer>
+    </div>
+
+    <script>
+        // 创建和平鸽动画
+        function createDoves() {
+            const doveContainer = document.getElementById('doveContainer');
+            const doveCount = 7;
+            
+            for (let i = 0; i < doveCount; i++) {
+                const dove = document.createElement('div');
+                dove.classList.add('dove');
+                dove.innerHTML = '🕊️';
+                
+                // 随机位置和动画参数
+                const startY = Math.random() * 80 + 10; // 10% 到 90%
+                const duration = Math.random() * 20 + 15; // 15 到 35 秒
+                const delay = Math.random() * 10; // 0 到 10 秒延迟
+                const size = Math.random() * 0.8 + 0.7; // 0.7 到 1.5 倍大小
+                
+                dove.style.setProperty('--y', `${startY}%`);
+                dove.style.animationDuration = `${duration}s`;
+                dove.style.animationDelay = `${delay}s`;
+                dove.style.fontSize = `${size}rem`;
+                dove.style.left = `-${100 + Math.random() * 50}px`;
+                
+                doveContainer.appendChild(dove);
+            }
+        }
+        
+        // 更新和平祈愿计数器
+        function updateCounter() {
+            const counter = document.getElementById('peaceCounter');
+            let currentCount = parseInt(counter.textContent.replace(/,/g, ''));
+            
+            // 每5秒增加一些祈愿数
+            setInterval(() => {
+                // 随机增加1-5个祈愿
+                const increment = Math.floor(Math.random() * 5) + 1;
+                currentCount += increment;
+                
+                // 格式化数字
+                counter.textContent = currentCount.toLocaleString();
+            }, 5000);
+        }
+        
+        // 背景音乐控制
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const playMusicBtn = document.getElementById('playMusicBtn');
+        const pauseMusicBtn = document.getElementById('pauseMusicBtn');
+        const stopMusicBtn = document.getElementById('stopMusicBtn');
+        const musicVolume = document.getElementById('musicVolume');
+        
+        // 设置初始音量
+        backgroundMusic.volume = musicVolume.value;
+        
+        playMusicBtn.addEventListener('click', function() {
+            backgroundMusic.play();
+            updateMusicButtonState(true);
+        });
+        
+        pauseMusicBtn.addEventListener('click', function() {
+            backgroundMusic.pause();
+            updateMusicButtonState(false);
+        });
+        
+        stopMusicBtn.addEventListener('click', function() {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            updateMusicButtonState(false);
+        });
+        
+        musicVolume.addEventListener('input', function() {
+            backgroundMusic.volume = this.value;
+        });
+        
+        function updateMusicButtonState(isPlaying) {
+            if (isPlaying) {
+                playMusicBtn.innerHTML = '<i class="fas fa-play"></i> 播放中...';
+                playMusicBtn.disabled = true;
+                pauseMusicBtn.disabled = false;
+                stopMusicBtn.disabled = false;
+            } else {
+                playMusicBtn.innerHTML = '<i class="fas fa-play"></i> 播放音乐';
+                playMusicBtn.disabled = false;
+                pauseMusicBtn.disabled = false;
+                stopMusicBtn.disabled = false;
+            }
+        }
+        
+        // 背景视频控制
+        const backgroundVideo = document.getElementById('backgroundVideo');
+        const playVideoBtn = document.getElementById('playVideoBtn');
+        const pauseVideoBtn = document.getElementById('pauseVideoBtn');
+        const muteVideoBtn = document.getElementById('muteVideoBtn');
+        
+        playVideoBtn.addEventListener('click', function() {
+            backgroundVideo.play();
+            updateVideoButtonState(true);
+        });
+        
+        pauseVideoBtn.addEventListener('click', function() {
+            backgroundVideo.pause();
+            updateVideoButtonState(false);
+        });
+        
+        muteVideoBtn.addEventListener('click', function() {
+            if (backgroundVideo.muted) {
+                backgroundVideo.muted = false;
+                this.innerHTML = '<i class="fas fa-volume-mute"></i> 静音';
+            } else {
+                backgroundVideo.muted = true;
+                this.innerHTML = '<i class="fas fa-volume-up"></i> 取消静音';
+            }
+        });
+        
+        function updateVideoButtonState(isPlaying) {
+            if (isPlaying) {
+                playVideoBtn.innerHTML = '<i class="fas fa-play"></i> 播放中...';
+                playVideoBtn.disabled = true;
+                pauseVideoBtn.disabled = false;
+            } else {
+                playVideoBtn.innerHTML = '<i class="fas fa-play"></i> 播放视频';
+                playVideoBtn.disabled = false;
+                pauseVideoBtn.disabled = false;
+            }
+        }
+        
+        // 和平视频控制
+        const peaceVideo = document.getElementById('peaceVideo');
+        const videoPlaceholder = document.getElementById('videoPlaceholder');
+        const playPeaceVideoBtn = document.getElementById('playPeaceVideoBtn');
+        
+        playPeaceVideoBtn.addEventListener('click', function() {
+            videoPlaceholder.style.display = 'none';
+            peaceVideo.style.display = 'block';
+            peaceVideo.play();
+            this.innerHTML = '<i class="fas fa-play"></i> 播放中...';
+            this.disabled = true;
+            
+            // 视频结束时恢复按钮状态
+            peaceVideo.onended = function() {
+                playPeaceVideoBtn.innerHTML = '<i class="fas fa-play"></i> 重新播放';
+                playPeaceVideoBtn.disabled = false;
+            };
+        });
+        
+        // 祈愿按钮点击事件
+        document.getElementById('prayBtn').addEventListener('click', function() {
+            const counter = document.getElementById('peaceCounter');
+            let currentCount = parseInt(counter.textContent.replace(/,/g, ''));
+            currentCount += 1;
+            counter.textContent = currentCount.toLocaleString();
+            
+            // 显示反馈
+            this.innerHTML = '<i class="fas fa-check"></i> 已祈愿';
+            this.style.background = 'linear-gradient(to right, #5cb85c, #4CAF50)';
+            
+            // 播放祈祷音效（如果音乐正在播放，短暂暂停并恢复）
+            const wasPlaying = !backgroundMusic.paused;
+            if (wasPlaying) {
+                backgroundMusic.pause();
+            }
+            
+            // 创建临时和平鸽
+            const tempDove = document.createElement('div');
+            tempDove.classList.add('dove');
+            tempDove.innerHTML = '🕊️';
+            tempDove.style.setProperty('--y', '50%');
+            tempDove.style.animationDuration = '8s';
+            tempDove.style.fontSize = '1.5rem';
+            tempDove.style.left = '-100px';
+            tempDove.style.zIndex = '1000';
+            
+            document.getElementById('doveContainer').appendChild(tempDove);
+            
+            // 8秒后移除
+            setTimeout(() => {
+                tempDove.remove();
+            }, 8000);
+            
+            // 恢复音乐播放
+            if (wasPlaying) {
+                setTimeout(() => {
+                    backgroundMusic.play();
+                }, 800);
+            }
+            
+            // 3秒后恢复按钮
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-dove"></i> 再次祈愿';
+                this.style.background = 'linear-gradient(to right, #4a90e2, #5cb85c)';
+            }, 3000);
+        });
+        
+        // 分享按钮点击事件
+        document.getElementById('shareBtn').addEventListener('click', function() {
+            alert("感谢您分享和平理念！\n\n在现实中，您可以通过社交媒体分享和平倡议，与朋友家人讨论和平的重要性，或参与本地和平活动，也可将本网页网址发送给他人。\n\n和平始于我们每一个人。");
+        });
+        
+        // 了解和平组织按钮点击事件
+        document.getElementById('learnBtn').addEventListener('click', function() {
+            alert("主要的国际和平组织包括：\n\n• 联合国（UN） - 维护国际和平与安全\n• 国际红十字与红新月运动 - 提供人道主义援助\n• 诺贝尔和平奖 - 表彰为和平做出贡献的个人与组织\n• 国际和平局 - 历史最悠久的和平组织\n• 和平旅 - 推动非暴力冲突解决\n\n您可以在这些组织的官方网站了解更多信息。");
+        });
+        
+        // 语言切换功能
+        document.getElementById('langToggle').addEventListener('click', function() {
+            const isEnglish = this.textContent === 'English';
+            
+            if (isEnglish) {
+                // 切换到中文
+                this.textContent = '中文';
+                
+                // 更新页面内容为中文
+                document.querySelector('h1').textContent = '祈祷世界和平';
+                document.querySelector('.subtitle').textContent = '愿和平之光照亮世界的每一个角落';
+                document.querySelector('header p').textContent = '我们共同祈愿，战争与冲突不再，和谐与理解永存';
+                
+                // 更新卡片标题
+                document.querySelectorAll('.card h2')[0].innerHTML = '<i class="fas fa-pray"></i> 和平祈愿文';
+                document.querySelectorAll('.card h2')[1].innerHTML = '<i class="fas fa-handshake"></i> 和平之路';
+                
+                // 更新媒体部分
+                document.querySelector('.media-section h2').innerHTML = '<i class="fas fa-music"></i> 和平之音与影像';
+                document.querySelectorAll('.media-title')[0].innerHTML = '<i class="fas fa-volume-up"></i> 背景音乐';
+                document.querySelectorAll('.media-title')[1].innerHTML = '<i class="fas fa-video"></i> 背景视频控制';
+                
+                // 更新媒体按钮
+                document.getElementById('playMusicBtn').innerHTML = '<i class="fas fa-play"></i> 播放音乐';
+                document.getElementById('pauseMusicBtn').innerHTML = '<i class="fas fa-pause"></i> 暂停音乐';
+                document.getElementById('stopMusicBtn').innerHTML = '<i class="fas fa-stop"></i> 停止音乐';
+                document.getElementById('playVideoBtn').innerHTML = '<i class="fas fa-play"></i> 播放视频';
+                document.getElementById('pauseVideoBtn').innerHTML = '<i class="fas fa-pause"></i> 暂停视频';
+                document.getElementById('muteVideoBtn').innerHTML = '<i class="fas fa-volume-mute"></i> 静音/取消';
+                
+                // 更新视频占位符
+                document.getElementById('videoPlaceholder').innerHTML = '<i class="fas fa-play-circle" style="font-size: 3rem; margin-right: 10px;"></i> 点击下方按钮播放和平视频';
+                document.getElementById('playPeaceVideoBtn').innerHTML = '<i class="fas fa-play"></i> 播放和平视频';
+                
+                // 更新行动部分
+                document.querySelector('.action-title').textContent = '加入和平祈愿';
+                document.querySelector('.action-section p').textContent = '您的每一次祈愿，都是和平力量的一次增强';
+                document.querySelector('.action-section p:nth-child(4)').textContent = '人已参与祈愿';
+                
+                // 更新按钮文本
+                document.getElementById('prayBtn').innerHTML = '<i class="fas fa-dove"></i> 我也要祈愿';
+                document.getElementById('shareBtn').innerHTML = '<i class="fas fa-share-alt"></i> 分享和平';
+                document.getElementById('learnBtn').innerHTML = '<i class="fas fa-book"></i> 了解和平组织';
+                
+                // 更新页脚
+                document.querySelectorAll('footer p')[0].textContent = '愿和平之光永驻人间，愿世界充满爱与理解';
+                document.querySelectorAll('footer p')[1].innerHTML = '让我们携手努力，为子孙后代创造一个更美好的世界 <span class="heart">❤</span>';
+            } else {
+                // 切换到英文
+                this.textContent = 'English';
+                
+                // 更新页面内容为英文
+                document.querySelector('h1').textContent = 'Pray for World Peace';
+                document.querySelector('.subtitle').textContent = 'May the light of peace illuminate every corner of the world';
+                document.querySelector('header p').textContent = 'We pray together for an end to war and conflict, and for lasting harmony and understanding';
+                
+                // 更新卡片标题
+                document.querySelectorAll('.card h2')[0].innerHTML = '<i class="fas fa-pray"></i> Peace Prayer';
+                document.querySelectorAll('.card h2')[1].innerHTML = '<i class="fas fa-handshake"></i> Path to Peace';
+                
+                // 更新媒体部分
+                document.querySelector('.media-section h2').innerHTML = '<i class="fas fa-music"></i> Peace Music & Video';
+                document.querySelectorAll('.media-title')[0].innerHTML = '<i class="fas fa-volume-up"></i> Background Music';
+                document.querySelectorAll('.media-title')[1].innerHTML = '<i class="fas fa-video"></i> Video Controls';
+                
+                // 更新媒体按钮
+                document.getElementById('playMusicBtn').innerHTML = '<i class="fas fa-play"></i> Play Music';
+                document.getElementById('pauseMusicBtn').innerHTML = '<i class="fas fa-pause"></i> Pause Music';
+                document.getElementById('stopMusicBtn').innerHTML = '<i class="fas fa-stop"></i> Stop Music';
+                document.getElementById('playVideoBtn').innerHTML = '<i class="fas fa-play"></i> Play Video';
+                document.getElementById('pauseVideoBtn').innerHTML = '<i class="fas fa-pause"></i> Pause Video';
+                document.getElementById('muteVideoBtn').innerHTML = '<i class="fas fa-volume-mute"></i> Mute/Unmute';
+                
+                // 更新视频占位符
+                document.getElementById('videoPlaceholder').innerHTML = '<i class="fas fa-play-circle" style="font-size: 3rem; margin-right: 10px;"></i> Click the button below to play peace video';
+                document.getElementById('playPeaceVideoBtn').innerHTML = '<i class="fas fa-play"></i> Play Peace Video';
+                
+                // 更新行动部分
+                document.querySelector('.action-title').textContent = 'Join the Peace Prayer';
+                document.querySelector('.action-section p').textContent = 'Each prayer adds strength to the cause of peace';
+                document.querySelector('.action-section p:nth-child(4)').textContent = 'people have joined the prayer';
+                
+                // 更新按钮文本
+                document.getElementById('prayBtn').innerHTML = '<i class="fas fa-dove"></i> I Pray for Peace';
+                document.getElementById('shareBtn').innerHTML = '<i class="fas fa-share-alt"></i> Share Peace';
+                document.getElementById('learnBtn').innerHTML = '<i class="fas fa-book"></i> Learn About Peace';
+                
+                // 更新页脚
+                document.querySelectorAll('footer p')[0].textContent = 'May the light of peace always shine upon humanity, may the world be filled with love and understanding';
+                document.querySelectorAll('footer p')[1].innerHTML = 'Let us work together to create a better world for future generations <span class="heart">❤</span>';
+            }
+        });
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            createDoves();
+            updateCounter();
+            
+            // 初始化按钮状态
+            updateMusicButtonState(false);
+            updateVideoButtonState(true); // 背景视频默认自动播放
+            
+            // 自动播放背景音乐（需要用户交互，所以不自动播放）
+            // backgroundMusic.play().catch(e => console.log("自动播放被阻止，需要用户交互"));
+        });
+    </script>
+</body>
+</html>
